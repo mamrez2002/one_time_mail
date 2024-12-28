@@ -41,7 +41,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>One Time Mail</h2>
+        <h2>One-Time Mail</h2>
         <textarea id="textInput" placeholder="متن خود را وارد کنید" rows="5" style="width: 100%; font-size: 16px; padding: 10px;"></textarea>
         <button onclick="sendData()">دریافت لینک</button>
         <div id="linkContainer" style="display: none; margin-top: 20px;">
@@ -65,7 +65,7 @@
                 method: 'POST',
                 body: data,
             })
-            .then(response => response.text())  
+            .then(response => response.text())
             .then(link => {
                 if (link) {
                     const linkContainer = document.getElementById('linkContainer');
