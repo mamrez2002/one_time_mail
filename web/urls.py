@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import write_mail
+from .views import write_mail , index
 
 urlpatterns = [
-    path('wm/', write_mail, name='write_name' ),
-    path(r'writemail/', write_mail , name='wm'),
+    path('', index , name='index' ),
+    path('otm/', write_mail, name='write_mail' ),
 ]

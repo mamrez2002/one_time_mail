@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTM</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f3f3;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            padding: 100px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>One Time Mail</h2>
+        <textarea id="textInput" placeholder="متن خود را وارد کنید" rows="5" style="width: 100%; font-size: 16px; padding: 10px;"></textarea>
+        <button onclick="sendData()">دریافت لینک</button>
+        <div id="linkContainer" style="display: none; margin-top: 20px;">
+            <input type="text" id="linkInput" readonly style="width: 300px; height: 30px;">
+            <button onclick="copyLink()">کپی لینک</button>
+        </div>
+    </div>
+
+    <script>
+        function sendData() {
+            const text = document.getElementById('textInput').value;
+
+            if (text === '') {
+                alert('لطفاً متن خود را وارد کنید!');
+                return;
+            }
+            const data = new FormData();
+            data.append('text', text);
+
+            fetch("{{ link }}", {
+                method: 'POST',
+                body: data,
+            })
+            .then(response => response.text())  
+            .then(link => {
+                if (link) {
+                    const linkContainer = document.getElementById('linkContainer');
+                    const linkInput = document.getElementById('linkInput');
+                    linkInput.value = link;
+                    linkContainer.style.display = 'block';
+                } else {
+                    alert("خطا در دریافت لینک.");
+                }
+            })
+            .catch(error => {
+                console.error("خطا در ارسال درخواست:", error);
+            });
+        }
+        function copyLink() {
+            const linkInput = document.getElementById('linkInput');
+            linkInput.select();
+            document.execCommand('copy');
+            alert("لینک کپی شد!");
+        }
+    </script>
+</body>
+</html>
