@@ -38,11 +38,14 @@ def write_mail(request):
 
         mail = Mail.objects.filter(auth = code)
         if not mail :
-            return HttpResponse('پیام از بین رفته است')
+            text = 'پیام از بین رفته است'
+        else:
+            text = mail[0].text
+            mail[0].delete()
 
-        text = mail[0].text
-        mail[0].delete()
-        return HttpResponse(text)
+        template = loader.get_template('read_mail.html')
+        context = {'mail': text.replace('\n','<br>')}
+        return HttpResponse(template.render(context , request))
 
 
 
