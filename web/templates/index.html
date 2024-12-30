@@ -37,12 +37,22 @@
         button:hover {
             background-color: #0056b3;
         }
+        textarea {
+            direction: rtl;  /* متن فارسی از راست به چپ نوشته می‌شود */
+            text-align: right;  /* متن درون textarea راست‌چین می‌شود */
+        }
+        textarea {
+            direction: ltr;  /* متن انگلیسی از چپ به راست نوشته می‌شود */
+            text-align: left;  /* متن درون textarea چپ‌چین می‌شود */
+        }
+
+
     </style>
 </head>
 <body>
     <div class="container">
         <h2>One-Time Mail</h2>
-        <textarea id="textInput" placeholder="متن خود را وارد کنید" rows="5" style="width: 100%; font-size: 16px; padding: 10px;"></textarea>
+        <textarea id="textInput" class="right-align" placeholder="متن خود را وارد کنید" rows="5" style="width: 100%; font-size: 16px; padding: 10px;"></textarea>
         <button onclick="sendData()">دریافت لینک</button>
         <div id="linkContainer" style="display: none; margin-top: 20px;">
             <input type="text" id="linkInput" readonly style="width: 300px; height: 30px;" onclick="copyLink()">
@@ -51,6 +61,17 @@
     </div>
 
     <script>
+        document.querySelector('textarea').addEventListener('input', function() {
+        var text = this.value;
+        // بررسی اینکه آیا متن حاوی کاراکترهای فارسی است یا خیر
+        if (/[\u0600-\u06FF]/.test(text)) {
+            this.style.direction = 'rtl';
+            this.style.textAlign = 'right';
+        } else {
+            this.style.direction = 'ltr';
+            this.style.textAlign = 'left';
+        }
+        });
         function sendData() {
             const text = document.getElementById('textInput').value;
 
