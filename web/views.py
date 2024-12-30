@@ -6,7 +6,7 @@ from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from .models import Mail
 
-import random , string
+import random , string, bleach
 # Create your views here.
 
 
@@ -23,11 +23,12 @@ def write_mail(request):
 
         auth ='otm' +  random_str(64)
         mail = Mail()
-        mail.text = text
+        mail.text = bleach.clean(text)
         mail.auth = auth
         mail.save()
 
         return HttpResponse(request.build_absolute_uri('?code=') + auth)
+
 
     if request.method == 'GET':
         code = request.GET.get('code', False)
